@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contago AI - Chat con Audio y Gráficas</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 90%;
+            max-width: 700px;
+            height: 90vh;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        h1 {
+            text-align: center;
+            color: #bb86fc;
+            padding: 20px;
+            margin: 0;
+            background-color: #2a2a2a;
+            border-bottom: 1px solid #333;
+        }
+        .chat-box {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            padding: 12px 18px;
+            border-radius: 20px;
+            max-width: 75%;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+        .user-message {
+            background-color: #373737;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        .assistant-message {
+            background-color: #bb86fc;
+            color: #121212;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        /* --- NUEVO: Estilo para la gráfica --- */
+        .chart-container {
+            align-self: flex-start;
+            max-width: 90%; /* La gráfica puede ser más ancha que el texto */
+            background-color: #f0f0f0; /* Fondo claro para que la gráfica resalte */
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        .chart-container img {
+            max-width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+        /* --- Fin de lo nuevo --- */
+        .error-message {
+            background-color: #cf6679;
+            color: #121212;
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            border-top: 1px solid #333;
+            background-color: #2a2a2a;
+        }
+        #user-input {
+            flex-grow: 1;
+            padding: 12px 18px;
+            border: 1px solid #444;
+            border-radius: 25px;
+            background-color: #373737;
+            color: #e0e0e0;
+            font-size: 16px;
+            outline: none;
+        }
+        #user-input:focus {
+            border-color: #bb86fc;
+        }
+        .icon-button {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background-color: #bb86fc;
+            color: #121212;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-button:hover {
+            background-color: #a362f7;
+        }
+        .icon-button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        .icon-button svg {
+            width: 24px;
+            height: 24px;
+        }
+        #record-button.is-recording {
+            background-color: #cf6679;
+            transform: scale(1.1);
+        }
+        .loader {
+            border: 3px solid rgba(243, 243, 243, 0.3);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        .hidden {
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h1>Contago AI</h1>
+        <div class="chat-box" id="chat-box">
+             <div class="message assistant-message">
+                Hola, soy Contago AI. Puedo generar reportes y también gráficas. ¿En qué te ayudo?
+            </div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Escribe o presiona el micrófono..." autocomplete="off">
+            <button id="record-button" class="icon-button" title="Grabar voz">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a2 2 0 0 0 2-2V6a2 2 0 0 0-4 0v6a2 2 0 0 0 2 2zm-2-6a2 2 0 1 1 4 0v6a2 2 0 1 1-4 0V8z"/><path d="M12 19a5 5 0 0 1-5-5V9a1 1 0 1 1 2 0v5a3 3 0 0 0 6 0V9a1 1 0 1 1 2 0v5a5 5 0 0 1-5 5z"/></svg>
+            </button>
+            <button id="send-button" class="icon-button">
+                <div class="loader hidden" id="loader"></div>
+                <svg id="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3.478 2.405a.75.75 0 0 0-.926.94l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.405Z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURACIÓN ---
+        const API_BASE_URL = "http://127.0.0.1:8080";
+        const TENANT_ID = "414b6d7b-b03f-41f7-96f3-1fd224d89699"; // ¡Reemplaza!
+        const USER_ID = "99eb0542-e0fe-4e7e-a7a1-15a6ee205274"; // ¡Reemplaza!
+
+        // --- ELEMENTOS DEL DOM ---
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const recordButton = document.getElementById('record-button');
+        const sendIcon = document.getElementById('send-icon');
+        const loader = document.getElementById('loader');
+
+        // --- ESTADO DE LA APLICACIÓN ---
+        let chatHistory = [];
+        let isWaitingForResponse = false;
+        let isRecording = false;
+
+        // --- LÓGICA DE SPEECH-TO-TEXT (VOZ A TEXTO) ---
+        // (Sin cambios en esta sección, se deja como está)
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'es-ES';
+            recognition.interimResults = true;
+            recognition.continuous = false;
+
+            recognition.onstart = () => { isRecording = true; recordButton.classList.add('is-recording'); userInput.placeholder = "Escuchando..."; };
+            recognition.onend = () => { isRecording = false; recordButton.classList.remove('is-recording'); userInput.placeholder = "Escribe o presiona el micrófono..."; };
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                let finalTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) { finalTranscript += event.results[i][0].transcript; } 
+                    else { interimTranscript += event.results[i][0].transcript; }
+                }
+                userInput.value = finalTranscript + interimTranscript;
+                if (finalTranscript) { sendMessage(); }
+            };
+            recognition.onerror = (event) => { console.error("Error en Speech Recognition:", event.error); addMessageToUI('assistant', `Error de micrófono: ${event.error}`, true); };
+        } else {
+            console.warn("Speech Recognition no es soportado en este navegador.");
+            recordButton.style.display = 'none';
+        }
+        
+        // --- LÓGICA PRINCIPAL DEL CHAT (MODIFICADA) ---
+        async function sendMessage() {
+            const question = userInput.value.trim();
+            if (!question || isWaitingForResponse) return;
+
+            setLoading(true);
+            addMessageToUI('user', question);
+            userInput.value = '';
+
+            try {
+                // El backend ahora devuelve un JSON, no un stream.
+                const response = await fetch(`${API_BASE_URL}/chat/${TENANT_ID}/${USER_ID}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        question: question,
+                        history: chatHistory
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || `Error del servidor: ${response.status}`);
+                }
+                
+                // 1. Convertir la respuesta a JSON.
+                const data = await response.json();
+
+                // 2. Actualizar el historial local.
+                chatHistory = data.history;
+
+                // 3. Mostrar la respuesta de texto del asistente en la UI.
+                addMessageToUI('assistant', data.answer);
+
+                // 4. (NUEVO) Mostrar la gráfica si está disponible.
+                if (data.chart_data) {
+                    addChartToUI(data.chart_data);
+                }
+
+                // 5. (MODIFICADO) Reproducir el audio desde el string Base64.
+                if (data.audio_base64) {
+                    const audio = new Audio("data:audio/mpeg;base64," + data.audio_base64);
+                    audio.play();
+                }
+
+            } catch (error) {
+                console.error("Error al enviar mensaje:", error);
+                addMessageToUI('assistant', `Error: ${error.message}`, true);
+            } finally {
+                setLoading(false);
+            }
+        }
+        
+        function handleRecord() {
+            if (isWaitingForResponse) return;
+            if (isRecording) { recognition.stop(); } 
+            else { recognition.start(); }
+        }
+
+        function addMessageToUI(sender, text, isError = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', `${sender}-message`);
+            if (isError) {
+                messageDiv.classList.add('error-message');
+            }
+            // Para renderizar saltos de línea si el modelo los usa
+            messageDiv.innerText = text; 
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // --- NUEVA FUNCIÓN ---
+        // Función para añadir la gráfica a la interfaz de usuario.
+        function addChartToUI(base64String) {
+            // Crea un contenedor para la imagen para poder estilizarlo mejor.
+            const chartDiv = document.createElement('div');
+            chartDiv.classList.add('chart-container');
+            
+            const chartImg = document.createElement('img');
+            // La fuente de la imagen es un "Data URL" con el contenido Base64.
+            chartImg.src = `data:image/png;base64,${base64String}`;
+            chartImg.alt = "Gráfica generada por Contago AI";
+
+            chartDiv.appendChild(chartImg);
+            chatBox.appendChild(chartDiv);
+            chatBox.scrollTop = chatBox.scrollHeight; // Asegura que la vista se desplace hacia abajo
+        }
+
+        function setLoading(isLoading) {
+            isWaitingForResponse = isLoading;
+            userInput.disabled = isLoading;
+            sendButton.disabled = isLoading;
+            recordButton.disabled = isLoading;
+
+            if (isLoading) {
+                sendIcon.classList.add('hidden');
+                loader.classList.remove('hidden');
+            } else {
+                sendIcon.classList.remove('hidden');
+                loader.classList.add('hidden');
+            }
+        }
+        
+        // --- LISTENERS DE EVENTOS ---
+        sendButton.addEventListener('click', sendMessage);
+        recordButton.addEventListener('click', handleRecord);
+        userInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+    </script>
+</body>
+</html>
