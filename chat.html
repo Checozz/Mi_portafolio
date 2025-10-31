@@ -34,6 +34,33 @@
             background-color: #2a2a2a;
             border-bottom: 1px solid #333;
         }
+        /* --- NUEVO: Estilos para el selector de empresa --- */
+        .tenant-selector-area {
+            padding: 10px 20px;
+            background-color: #2a2a2a;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #tenant-selector {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #373737;
+            color: #e0e0e0;
+            font-size: 14px;
+            outline: none;
+        }
+        #tenant-selector:focus {
+            border-color: #bb86fc;
+        }
+        #tenant-selector:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        /* --- Fin de lo nuevo --- */
         .chat-box {
             flex-grow: 1;
             padding: 20px;
@@ -60,11 +87,10 @@
             align-self: flex-start;
             border-bottom-left-radius: 5px;
         }
-        /* --- NUEVO: Estilo para la gráfica --- */
         .chart-container {
             align-self: flex-start;
-            max-width: 90%; /* La gráfica puede ser más ancha que el texto */
-            background-color: #f0f0f0; /* Fondo claro para que la gráfica resalte */
+            max-width: 90%;
+            background-color: #f0f0f0;
             border-radius: 12px;
             padding: 10px;
             margin-top: 5px;
@@ -74,7 +100,6 @@
             display: block;
             border-radius: 8px;
         }
-        /* --- Fin de lo nuevo --- */
         .error-message {
             background-color: #cf6679;
             color: #121212;
@@ -148,9 +173,16 @@
 <body>
     <div class="chat-container">
         <h1>Contago AI</h1>
+        
+        <!-- --- NUEVO: Selector de Empresa --- -->
+        <div class="tenant-selector-area">
+            <label for="tenant-selector">Empresa:</label>
+            <select id="tenant-selector"></select>
+        </div>
+        
         <div class="chat-box" id="chat-box">
              <div class="message assistant-message">
-                Hola, soy Contago AI. Puedo generar reportes y también gráficas. ¿En qué te ayudo?
+                Hola, soy Contago AI. Por favor, selecciona una empresa para comenzar.
             </div>
         </div>
         <div class="input-area">
@@ -168,24 +200,33 @@
     <script>
         // --- CONFIGURACIÓN ---
         const API_BASE_URL = "https://deepaxiom-contago-preview-494247865916.us-central1.run.app/";
-        const TENANT_ID = "414b6d7b-b03f-41f7-96f3-1fd224d89699"; // ¡Reemplaza!
-        const USER_ID = "99eb0542-e0fe-4e7e-a7a1-15a6ee205274"; // ¡Reemplaza!
+        const USER_ID = "99eb0542-e0fe-4e7e-a7a1-15a6ee205274"; // Este puede seguir siendo fijo
 
-        // --- ELEMENTOS DEL DOM ---
+        // --- NUEVO: DATOS DE TENANTS ---
+        // Aquí defines la lista de empresas. Puedes añadir tantas como necesites.
+        const tenants = [
+            { id: "414b6d7b-b03f-41f7-96f3-1fd224d89699", name: "LAUDEM AVE" },
+            { id: "68dabe9f-aeea-4a42-9e31-27dfef819618", name: "Servicios Jacala" },
+            { id: "fc2655fb-90ad-49fe-86f3-a41f60b5381f", name: "ZETUNNA" }
+        ];
+
+        // --- MODIFICADO: ELEMENTOS DEL DOM ---
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const recordButton = document.getElementById('record-button');
         const sendIcon = document.getElementById('send-icon');
         const loader = document.getElementById('loader');
+        const tenantSelector = document.getElementById('tenant-selector'); // --- NUEVO
 
-        // --- ESTADO DE LA APLICACIÓN ---
+        // --- MODIFICADO: ESTADO DE LA APLICACIÓN ---
         let chatHistory = [];
         let isWaitingForResponse = false;
         let isRecording = false;
+        let selectedTenantId = ''; // --- NUEVO: El Tenant ID ahora es una variable
 
-        // --- LÓGICA DE SPEECH-TO-TEXT (VOZ A TEXTO) ---
-        // (Sin cambios en esta sección, se deja como está)
+        // --- LÓGICA DE SPEECH-TO-TEXT (Sin Cambios) ---
+        // ... (El código de SpeechRecognition se queda igual)
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition;
         if (SpeechRecognition) {
@@ -193,12 +234,10 @@
             recognition.lang = 'es-ES';
             recognition.interimResults = true;
             recognition.continuous = false;
-
             recognition.onstart = () => { isRecording = true; recordButton.classList.add('is-recording'); userInput.placeholder = "Escuchando..."; };
             recognition.onend = () => { isRecording = false; recordButton.classList.remove('is-recording'); userInput.placeholder = "Escribe o presiona el micrófono..."; };
             recognition.onresult = (event) => {
-                let interimTranscript = '';
-                let finalTranscript = '';
+                let interimTranscript = ''; let finalTranscript = '';
                 for (let i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) { finalTranscript += event.results[i][0].transcript; } 
                     else { interimTranscript += event.results[i][0].transcript; }
@@ -212,18 +251,24 @@
             recordButton.style.display = 'none';
         }
         
-        // --- LÓGICA PRINCIPAL DEL CHAT (MODIFICADA) ---
+        // --- MODIFICADO: LÓGICA PRINCIPAL DEL CHAT ---
         async function sendMessage() {
             const question = userInput.value.trim();
-            if (!question || isWaitingForResponse) return;
+            // --- MODIFICADO: Añadida validación para asegurar que se ha seleccionado un tenant
+            if (!question || isWaitingForResponse || !selectedTenantId) {
+                if (!selectedTenantId) {
+                    addMessageToUI('assistant', 'Por favor, selecciona una empresa antes de preguntar.', true);
+                }
+                return;
+            }
 
             setLoading(true);
             addMessageToUI('user', question);
             userInput.value = '';
 
             try {
-                // El backend ahora devuelve un JSON, no un stream.
-                const response = await fetch(`${API_BASE_URL}/chat/${TENANT_ID}/${USER_ID}`, {
+                // --- MODIFICADO: Se usa la variable `selectedTenantId` en la URL
+                const response = await fetch(`${API_BASE_URL}/chat/${selectedTenantId}/${USER_ID}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -237,21 +282,14 @@
                     throw new Error(errorData.detail || `Error del servidor: ${response.status}`);
                 }
                 
-                // 1. Convertir la respuesta a JSON.
                 const data = await response.json();
-
-                // 2. Actualizar el historial local.
                 chatHistory = data.history;
-
-                // 3. Mostrar la respuesta de texto del asistente en la UI.
                 addMessageToUI('assistant', data.answer);
 
-                // 4. (NUEVO) Mostrar la gráfica si está disponible.
                 if (data.chart_data) {
                     addChartToUI(data.chart_data);
                 }
 
-                // 5. (MODIFICADO) Reproducir el audio desde el string Base64.
                 if (data.audio_base64) {
                     const audio = new Audio("data:audio/mpeg;base64," + data.audio_base64);
                     audio.play();
@@ -277,34 +315,29 @@
             if (isError) {
                 messageDiv.classList.add('error-message');
             }
-            // Para renderizar saltos de línea si el modelo los usa
             messageDiv.innerText = text; 
             chatBox.appendChild(messageDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // --- NUEVA FUNCIÓN ---
-        // Función para añadir la gráfica a la interfaz de usuario.
         function addChartToUI(base64String) {
-            // Crea un contenedor para la imagen para poder estilizarlo mejor.
             const chartDiv = document.createElement('div');
             chartDiv.classList.add('chart-container');
-            
             const chartImg = document.createElement('img');
-            // La fuente de la imagen es un "Data URL" con el contenido Base64.
             chartImg.src = `data:image/png;base64,${base64String}`;
             chartImg.alt = "Gráfica generada por Contago AI";
-
             chartDiv.appendChild(chartImg);
             chatBox.appendChild(chartDiv);
-            chatBox.scrollTop = chatBox.scrollHeight; // Asegura que la vista se desplace hacia abajo
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
+        // --- MODIFICADO: Función setLoading para deshabilitar también el selector ---
         function setLoading(isLoading) {
             isWaitingForResponse = isLoading;
             userInput.disabled = isLoading;
             sendButton.disabled = isLoading;
             recordButton.disabled = isLoading;
+            tenantSelector.disabled = isLoading; // --- NUEVO
 
             if (isLoading) {
                 sendIcon.classList.add('hidden');
@@ -315,6 +348,36 @@
             }
         }
         
+        // --- NUEVO: LÓGICA DE SELECCIÓN DE TENANT ---
+        function populateTenantSelector() {
+            tenants.forEach(tenant => {
+                const option = document.createElement('option');
+                option.value = tenant.id;
+                option.textContent = tenant.name;
+                tenantSelector.appendChild(option);
+            });
+            // Establece el valor inicial
+            selectedTenantId = tenants[0].id; 
+            // Mensaje inicial personalizado para la primera empresa
+            const firstTenant = tenants[0];
+            chatBox.innerHTML = ''; // Limpiar el mensaje genérico
+            addMessageToUI('assistant', `Hola, estás consultando datos para ${firstTenant.name}. ¿En qué te puedo ayudar?`);
+        }
+
+        function resetChat(companyName) {
+            chatHistory = [];
+            chatBox.innerHTML = ''; // Limpia la interfaz de chat
+            addMessageToUI('assistant', `Cambiando a ${companyName}. El historial ha sido reiniciado. ¿En qué te puedo ayudar?`);
+        }
+
+        tenantSelector.addEventListener('change', (event) => {
+            selectedTenantId = event.target.value;
+            const selectedTenant = tenants.find(tenant => tenant.id === selectedTenantId);
+            if (selectedTenant) {
+                resetChat(selectedTenant.name);
+            }
+        });
+
         // --- LISTENERS DE EVENTOS ---
         sendButton.addEventListener('click', sendMessage);
         recordButton.addEventListener('click', handleRecord);
@@ -323,6 +386,11 @@
                 event.preventDefault();
                 sendMessage();
             }
+        });
+
+        // --- NUEVO: Inicia la aplicación poblando el selector ---
+        document.addEventListener('DOMContentLoaded', () => {
+            populateTenantSelector();
         });
 
     </script>
