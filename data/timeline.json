@@ -1,0 +1,47 @@
+{
+  "_comment": "Línea de tiempo. El orden de este array es el orden en que se muestra (de arriba a abajo). Para añadir un evento, copia un bloque y edítalo.",
+  "items": [
+    {
+      "year": "2026",
+      "title_es": "Telescopio operativo + Klipper configs",
+      "title_en": "Working telescope + Klipper configs",
+      "desc_es": "Termino el telescopio 114/900 con cuerpo 3D y publico mis configs de Klipper.",
+      "desc_en": "Finished the 114/900 telescope with 3D body and published Klipper configs."
+    },
+    {
+      "year": "2025",
+      "title_es": "Publicación científica + Full Stack",
+      "title_en": "Scientific publication + Full Stack",
+      "desc_es": "Sale el paper de melanoma en ESMO Open. Empiezo a trabajar full stack con Firebase y GCP.",
+      "desc_en": "Melanoma paper out in ESMO Open. Started full stack work with Firebase and GCP."
+    },
+    {
+      "year": "2025",
+      "title_es": "Hugging Face + Quantum",
+      "title_en": "Hugging Face + Quantum",
+      "desc_es": "Lanzo Space de segmentación de melanoma. Profundizo en Qiskit y computación cuántica.",
+      "desc_en": "Launched melanoma segmentation Space. Deep dive into Qiskit and quantum computing."
+    },
+    {
+      "year": "2024",
+      "title_es": "LNS-BUAP",
+      "title_en": "LNS-BUAP",
+      "desc_es": "Entro al Laboratorio Nacional de Supercómputo. Aprendo HPC, Slurm y entrenamiento distribuido.",
+      "desc_en": "Joined the National Supercomputing Lab. Learned HPC, Slurm, distributed training."
+    },
+    {
+      "year": "2023",
+      "title_es": "Sable de luz Arduino",
+      "title_en": "Arduino Lightsaber",
+      "desc_es": "Construyo el sable funcional para convención. Primer proyecto serio con microcontroladores.",
+      "desc_en": "Built a functional lightsaber for a convention. First serious microcontroller project."
+    },
+    {
+      "year": "2020 — 2025",
+      "title_es": "BUAP · Física Aplicada",
+      "title_en": "BUAP · Applied Physics",
+      "desc_es": "Estudios de licenciatura. Aquí empezó todo.",
+      "desc_en": "Undergrad. This is where it all started."
+    }
+  ]
+}

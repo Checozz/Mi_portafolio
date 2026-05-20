@@ -1,0 +1,53 @@
+{
+  "_comment": "Sección Hardware & Maker. Items con icono + título + descripción. Iconos: caracteres unicode o emoji.",
+  "items": [
+    {
+      "icon": "⬢",
+      "title_es": "Impresión 3D",
+      "title_en": "3D Printing",
+      "desc_es": "Experto en configuración avanzada de Flsun T1 y Anycubic Kobra 2 Neo. Configuraciones Klipper públicas en GitHub.",
+      "desc_en": "Advanced configuration of Flsun T1 and Anycubic Kobra 2 Neo. Public Klipper configs on GitHub."
+    },
+    {
+      "icon": "⌬",
+      "title_es": "Reparación Electrónica",
+      "title_en": "Electronics Repair",
+      "desc_es": "Mantenimiento preventivo y correctivo de laptops, PCs, consolas y controles. Diagnóstico a nivel de placa.",
+      "desc_en": "Preventive and corrective maintenance for laptops, PCs, consoles and controllers. Board-level diagnostics."
+    },
+    {
+      "icon": "◉",
+      "title_es": "Astronomía DIY",
+      "title_en": "DIY Astronomy",
+      "desc_es": "Telescopio newtoniano 114/900 con cuerpo impreso en 3D desde cero. Estas fotos de la luna fueron tomadas con él.",
+      "desc_en": "Newtonian telescope 114/900 with body 3D-printed from scratch. These moon photos were taken with it."
+    },
+    {
+      "icon": "⚙",
+      "title_es": "Mundo Mecánico",
+      "title_en": "Mechanical World",
+      "desc_es": "Actualmente capacitándome en mantenimiento automotriz para expandir mi conocimiento al mundo mecánico.",
+      "desc_en": "Currently training in automotive maintenance to expand my knowledge into the mechanical world."
+    }
+  ],
+  "gallery": [
+    {
+      "src": "assets/telescope-build.jpg",
+      "caption_es": "El cuerpo impreso en 3D, ensamblado",
+      "caption_en": "The 3D-printed body, assembled",
+      "wide": true
+    },
+    {
+      "src": "assets/moon-1.jpg",
+      "caption_es": "Luna · captura propia · telescopio 114/900",
+      "caption_en": "Moon · own capture · telescope 114/900",
+      "wide": false
+    },
+    {
+      "src": "assets/moon-2.jpg",
+      "caption_es": "Luna · captura propia · telescopio 114/900",
+      "caption_en": "Moon · own capture · telescope 114/900",
+      "wide": false
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "_comment": "Tarjetas de contacto. icon puede ser texto/emoji corto. label se traduce vía i18n. value es el texto visible. href es el enlace.",
+  "items": [
+    {
+      "icon": "✉",
+      "label_es": "Correo",
+      "label_en": "Email",
+      "value": "chekloo26@gmail.com",
+      "href": "mailto:chekloo26@gmail.com"
+    },
+    {
+      "icon": "in",
+      "label_es": "LinkedIn",
+      "label_en": "LinkedIn",
+      "value": "sergioalejandro19",
+      "href": "https://www.linkedin.com/in/sergioalejandro19/"
+    },
+    {
+      "icon": "⌥",
+      "label_es": "GitHub",
+      "label_en": "GitHub",
+      "value": "@Checozz",
+      "href": "https://github.com/Checozz"
+    },
+    {
+      "icon": "🤗",
+      "label_es": "Hugging Face",
+      "label_en": "Hugging Face",
+      "value": "AstroCheco",
+      "href": "https://huggingface.co/AstroCheco"
+    },
+    {
+      "icon": "iD",
+      "label_es": "ORCID",
+      "label_en": "ORCID",
+      "value": "0009-0007-2551-4031",
+      "href": "https://orcid.org/0009-0007-2551-4031"
+    }
+  ]
+}

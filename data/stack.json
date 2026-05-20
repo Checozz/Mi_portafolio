@@ -1,0 +1,35 @@
+{
+  "_comment": "Stack tecnológico. Cada categoría tiene un color (default | purple | pink | orange) y una lista de chips.",
+  "categories": [
+    {
+      "title_es": "Lenguajes",
+      "title_en": "Languages",
+      "color": "default",
+      "items": ["Python", "Kotlin", "Java", "Go", "Dart", "JavaScript", "C++", "Bash"]
+    },
+    {
+      "title_es": "IA & Datos",
+      "title_en": "AI & Data",
+      "color": "purple",
+      "items": ["TensorFlow", "Keras", "Qiskit", "HuggingFace", "NumPy", "Pandas", "Kaggle"]
+    },
+    {
+      "title_es": "Infraestructura",
+      "title_en": "Infrastructure",
+      "color": "pink",
+      "items": ["GCP", "Firebase", "Docker", "Linux", "Ubuntu Server", "Git", "Cloud Functions"]
+    },
+    {
+      "title_es": "Bases de datos",
+      "title_en": "Databases",
+      "color": "orange",
+      "items": ["MongoDB", "Firestore", "SQL", "SQLite", "PostgreSQL"]
+    },
+    {
+      "title_es": "Hardware",
+      "title_en": "Hardware",
+      "color": "default",
+      "items": ["Arduino", "Raspberry Pi", "Klipper", "3D Printing", "Soldering", "Multimeter"]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "_comment": "Experiencia profesional. Cada bloque tiene: when (cuándo), role (puesto en ES/EN), desc (descripción ES/EN).",
+  "items": [
+    {
+      "when_es": "2024",
+      "when_en": "2024",
+      "role_es": "Investigador · LNS-BUAP",
+      "role_en": "Researcher · LNS-BUAP",
+      "desc_es": "Manejo de datasets grandes y entrenamiento de modelos ML con TensorFlow sobre infraestructura de supercómputo.",
+      "desc_en": "Managing large datasets and training ML models with TensorFlow on supercomputing infrastructure."
+    },
+    {
+      "when_es": "2025",
+      "when_en": "2025",
+      "role_es": "Práctica Profesional · Hospital Ángeles Puebla",
+      "role_en": "Internship · Hospital Ángeles Puebla",
+      "desc_es": "Investigación en IA médica: regla dermatoscópica ABCD para detección de melanoma. Publicación con DOI en ESMO Open.",
+      "desc_en": "Medical AI research: ABCD dermatoscopic rule for melanoma detection. Published with DOI in ESMO Open."
+    },
+    {
+      "when_es": "2025 — Presente",
+      "when_en": "2025 — Present",
+      "role_es": "Full Stack Developer",
+      "role_en": "Full Stack Developer",
+      "desc_es": "Desarrollo de apps con Kotlin, Flutter, Firebase y GCP. Backend, frontend, deployment y mantenimiento.",
+      "desc_en": "Building apps with Kotlin, Flutter, Firebase and GCP. Backend, frontend, deployment and maintenance."
+    },
+    {
+      "when_es": "Siempre",
+      "when_en": "Always",
+      "role_es": "Maker · Proyectos personales",
+      "role_en": "Maker · Personal projects",
+      "desc_es": "Impresión 3D, electrónica, telescopio newtoniano, sable de luz Arduino, servidor casero con Ubuntu.",
+      "desc_en": "3D printing, electronics, Newtonian telescope, Arduino lightsaber, Ubuntu home server."
+    }
+  ]
+}

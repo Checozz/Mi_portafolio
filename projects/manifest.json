@@ -1,0 +1,124 @@
+{
+  "_comment": "Para añadir un proyecto nuevo: crea un .md en esta carpeta y agrégalo aquí. El orden de este array es el orden en que se muestran.",
+  "projects": [
+    {
+      "slug": "melanoma-ml",
+      "title_es": "Detección de Melanoma con ML",
+      "title_en": "Melanoma Detection with ML",
+      "subtitle_es": "Regla ABCD dermatoscópica + redes neuronales",
+      "subtitle_en": "ABCD dermatoscopic rule + neural networks",
+      "category": "ai",
+      "year": "2025",
+      "status_es": "Publicado · DOI",
+      "status_en": "Published · DOI",
+      "tags": ["TensorFlow", "Python", "Computer Vision", "Healthcare"],
+      "links": [
+        { "label": "DOI Publication", "url": "https://doi.org/10.1016/j.esmoop.2025.105594" },
+        { "label": "Hugging Face Space", "url": "https://huggingface.co/spaces/AstroCheco/melanoma-segmentation" }
+      ],
+      "featured": true
+    },
+    {
+      "slug": "telescopio-114-900",
+      "title_es": "Telescopio 114/900 Hecho a Mano",
+      "title_en": "Handmade 114/900 Telescope",
+      "subtitle_es": "Newtoniano · cuerpo impreso en 3D desde cero",
+      "subtitle_en": "Newtonian · 3D-printed body from scratch",
+      "category": "physics",
+      "year": "2026",
+      "status_es": "Operativo",
+      "status_en": "Operational",
+      "tags": ["Optics", "3D Printing", "Astronomy", "Newtonian"],
+      "links": [],
+      "featured": true
+    },
+    {
+      "slug": "quantum-qiskit",
+      "title_es": "Estudio Cuántico con Qiskit",
+      "title_en": "Quantum Study with Qiskit",
+      "subtitle_es": "Examen comprehensivo de computación cuántica",
+      "subtitle_en": "Comprehensive quantum computing exam",
+      "category": "quantum",
+      "year": "2025",
+      "status_es": "Notebook público",
+      "status_en": "Public notebook",
+      "tags": ["Qiskit", "Python", "Quantum", "Colab"],
+      "links": [
+        { "label": "Open in Colab", "url": "https://colab.research.google.com/drive/1GV4mm16s1A-8FMkhFtuhVizvt_rkcFwn?usp=sharing" }
+      ],
+      "featured": true
+    },
+    {
+      "slug": "lns-supercomputing",
+      "title_es": "HPC en el LNS-BUAP",
+      "title_en": "HPC at LNS-BUAP",
+      "subtitle_es": "Entrenamiento de modelos ML en supercómputo",
+      "subtitle_en": "Training ML models on supercomputing infrastructure",
+      "category": "ai",
+      "year": "2024",
+      "status_es": "Investigación",
+      "status_en": "Research",
+      "tags": ["TensorFlow", "HPC", "Big Data", "Linux"],
+      "links": [],
+      "featured": false
+    },
+    {
+      "slug": "home-server-pihole",
+      "title_es": "Servidor Casero · Pi-hole + VPN",
+      "title_en": "Home Server · Pi-hole + VPN",
+      "subtitle_es": "Ubuntu Server en una laptop vieja con propósito",
+      "subtitle_en": "Ubuntu Server on an old laptop, repurposed",
+      "category": "fullstack",
+      "year": "2025",
+      "status_es": "En producción · uso diario",
+      "status_en": "In production · daily use",
+      "tags": ["Ubuntu", "Pi-hole", "WireGuard", "Self-hosted"],
+      "links": [],
+      "featured": false
+    },
+    {
+      "slug": "klipper-3d-config",
+      "title_es": "Configuraciones Klipper · Flsun T1 & Kobra 2",
+      "title_en": "Klipper Configs · Flsun T1 & Kobra 2",
+      "subtitle_es": "Optimización y firmware avanzado para impresoras 3D",
+      "subtitle_en": "Advanced firmware and tuning for 3D printers",
+      "category": "hardware",
+      "year": "2025",
+      "status_es": "Open source",
+      "status_en": "Open source",
+      "tags": ["Klipper", "3D Printing", "Firmware", "Linux"],
+      "links": [
+        { "label": "GitHub Repo", "url": "https://github.com/Checozz/3DPrinters-klipper-config" }
+      ],
+      "featured": true
+    },
+    {
+      "slug": "lightsaber-arduino",
+      "title_es": "Sable de Luz · Arduino Nano",
+      "title_en": "Lightsaber · Arduino Nano",
+      "subtitle_es": "Efectos de sonido y luz para convención cosplay",
+      "subtitle_en": "Sound + light FX for cosplay convention",
+      "category": "hardware",
+      "year": "2023",
+      "status_es": "Construido · funcional",
+      "status_en": "Built · functional",
+      "tags": ["Arduino", "Electronics", "Cosplay", "C++"],
+      "links": [],
+      "featured": false
+    },
+    {
+      "slug": "fullstack-apps",
+      "title_es": "Desarrollo Full Stack",
+      "title_en": "Full Stack Development",
+      "subtitle_es": "Apps con Kotlin, Dart, Firebase y GCP",
+      "subtitle_en": "Apps with Kotlin, Dart, Firebase and GCP",
+      "category": "fullstack",
+      "year": "2026",
+      "status_es": "Continuo",
+      "status_en": "Ongoing",
+      "tags": ["Kotlin", "Flutter", "Firebase", "GCP"],
+      "links": [],
+      "featured": false
+    }
+  ]
+}
